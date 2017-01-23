@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
 		//store the numbers in row 0
 		//store the profilename in row 1
 		//store the directory in row 2
-		char store[3][100]; //0-99
+		char *store[2][100]; //0-99;  row 0 is the name, row 1 is the path
 		printf("Select a profile. Press n to make a new one\n");
 		/*this next part checks to see if anything is in the file*/
 		//it currently doesn't do that
@@ -147,53 +147,18 @@ int main(int argc, char *argv[])
 		else 
 		{
 			//these may not seem necessary, but it is if you want to detect numbers
-			int l = 0; //char string identifier
-			int p = 0; //path string identifier
+			//int l = 0; //char string identifier
+			//int p = 0; //path string identifier
 			int i = 0; //iterator
 			//int y = 0; //iterator
 			//int z = 0; //iterator
-			while ((c = getc(f)) != EOF)
+			while ((c = getc(f)) != EOF) //just make it so the fucking sdhit justs counts the rotations and that's in the display , and the rest of the shit is read here
 			{
-				//make the l the integer boolean
-				//HOLY FUCKING SHIT, IF INT DOESN'T GO INTO THE CHAR *STORE THEN JUST CONVERT THE FUCKING NUM TO CHAR* OR SOME SHIT BUT THEN WHEN YOU GET IT BACK OUT IT'S ALL FINE AND DANDY AND INT
-				//if (c != ' ' && c != '/')
-				//{
-					putchar(c);		
-				//}
-				if (isdigit(c) && l == 0 && p == 0) //where the integer booleans are useful, except yes you could start a counter and if it's not 1 then that's the end of the numbers, but that doesn't account for multiple numbers
-				{
-					store[0][i] = c; 
-				}
-				if (c == ' ' && l == 0)
-				{
-					l = 1; //this now means that any char from now will be inputted into a string
-					i = 0; //this can be here because the next iteration it's going into the if statement below
-					//no store because who wants a space?
-				}
-				if (c != ' ' && l == 1)
-				{
-					str[i] = c;
-				}
-				if (c == ' ' && l == 1) //could be else, but i don't want to test now
-				{
-					i = 0; //so that the string can be put into the array, but most likey, there is incompatible types
-					l = 0; //this now means that the char string is now ended
-					store[1][i] = str;
-					memset(str, 0, MAX_STR_SZ); //resets the shits to 0 for future shits
-				}
-				if (c == '/' && l == 0)
-				{
-					p = 1; //this now means that any char from now will be inputted into a string
-				}
-				if (c == '\r' && l == 0 && p == 1)
-				{
-					p = 0;
-				}
-				//if (l == 1 || ) //but like one that iteration, there would be characters that are going into into whatever iteration the previous is at
+				putchar(c);		
 				i++;
 			}
 			fclose(f);
-			printf("%c\n", store);
+			//printf("%c\n", store);
 			//I know how much it sucks to have the following system, but I don't know how to fix, yet 
 			/*
 			while ((c = getc(f)) != EOF)	
