@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
 		//store the numbers in row 0
 		//store the profilename in row 1
 		//store the directory in row 2
-		char *store[3][100]; //0-99
+		char store[3][100]; //0-99
 		printf("Select a profile. Press n to make a new one\n");
 		/*this next part checks to see if anything is in the file*/
 		//it currently doesn't do that
@@ -193,6 +193,7 @@ int main(int argc, char *argv[])
 				i++;
 			}
 			fclose(f);
+			printf("%c\n", store);
 			//I know how much it sucks to have the following system, but I don't know how to fix, yet 
 			/*
 			while ((c = getc(f)) != EOF)	
