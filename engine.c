@@ -155,13 +155,14 @@ int main(int argc, char *argv[])
 			while ((c = getc(f)) != EOF)
 			{
 				//make the l the integer boolean
+				//HOLY FUCKING SHIT, IF INT DOESN'T GO INTO THE CHAR *STORE THEN JUST CONVERT THE FUCKING NUM TO CHAR* OR SOME SHIT BUT THEN WHEN YOU GET IT BACK OUT IT'S ALL FINE AND DANDY AND INT
 				//if (c != ' ' && c != '/')
 				//{
 					putchar(c);		
 				//}
 				if (isdigit(c) && l == 0 && p == 0) //where the integer booleans are useful, except yes you could start a counter and if it's not 1 then that's the end of the numbers, but that doesn't account for multiple numbers
 				{
-					store[0][i] == c; 
+					store[0][i] = c; 
 				}
 				if (c == ' ' && l == 0)
 				{
@@ -177,7 +178,8 @@ int main(int argc, char *argv[])
 				{
 					i = 0; //so that the string can be put into the array, but most likey, there is incompatible types
 					l = 0; //this now means that the char string is now ended
-					
+					store[1][i] = str;
+					memset(str, 0, MAX_STR_SZ); //resets the shits to 0 for future shits
 				}
 				if (c == '/' && l == 0)
 				{
@@ -187,7 +189,7 @@ int main(int argc, char *argv[])
 				{
 					p = 0;
 				}
-				if (l == 1 || ) //but like one that iteration, there would be characters that are going into into whatever iteration the previous is at
+				//if (l == 1 || ) //but like one that iteration, there would be characters that are going into into whatever iteration the previous is at
 				i++;
 			}
 			fclose(f);
