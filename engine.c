@@ -9,6 +9,7 @@
 #define MAX_INPUT_SZ 256 /*Maximum name size +1*/
 #define MAX_DEC_SZ 2  /*Maximum decision size +1*/
 #define MAX_STR_SZ 256 /*MAXIMUM string size +1 and yes I know that it's the same as the input size but I want there to be a difference*/
+#define MAX_FILEC_SZ 256 /*Maximum string size +1, this is for the file content, character size*/
 //the path to the directory is (~)/.config/eco/
 //profiles in the blank text file which holds the information
 void execo(char *name, char *path, char *input) //name is the name of executable that is going to execute, path is the full path to the name, and input is any arguments
@@ -139,7 +140,7 @@ int main(int argc, char *argv[])
 		int c = 0;
 		char *d; //change to regular char if needed
 		char str[MAX_STR_SZ];
-		FILE *f = fopen(configpf, "a+"); 
+		FILE *f = fopen(configpf, "r"); 
 		if (!f)
 		{
 			printf("For some fucking reason, the file can't be opened.");	
@@ -147,57 +148,96 @@ int main(int argc, char *argv[])
 		else 
 		{
 			//these may not seem necessary, but it is if you want to detect numbers
-			//int l = 0; //char string identifier
-			//int p = 0; //path string identifier
+			int l = 0; //name bool
+			int p = 0; //path bool
 			int i = 0; //iterator
+			//char buf[3]; //maximum +1
+			char path[MAX_FILEC_SZ]; //or you could have a max name size, max path size, and make that really big
+			char name[MAX_STR_SZ]; // the name part, who needs buf when you have tough
 			//int y = 0; //iterator
 			//int z = 0; //iterator
+			//printf("Going to search.\n");
 			while ((c = getc(f)) != EOF) //just make it so the fucking sdhit justs counts the rotations and that's in the display , and the rest of the shit is read here
 			{
-				putchar(c);		
-				i++;
-			}
-			fclose(f);
-			//printf("%c\n", store);
-			//I know how much it sucks to have the following system, but I don't know how to fix, yet 
-			/*
-			while ((c = getc(f)) != EOF)	
-			{
-				printf("asdasd");
-				if(isdigit(c))
+				//putchar(c); don't print, only print when everything is parsed		
+				//or have it where the buf = "$!" until a '\r' is reached 
+				//buf[p] = c;
+				//printf("%s\n", &buf);
+				//printf("happy %d\n", p);
+				//if (p == 2)
+				//{
+				//	printf("%s\n", &buf);
+				//	//p = 0; 
+				//	break;				
+				//}
+				//if (p != 2)	
+				//{
+				//	printf("asdas\n");
+				//	buf[p] = c;
+				//}
+				//printf("%c",buf);
+				//p++;
+				//printf("p updated\n");
+				//if (c == 'h');
+				//{
+				//	printf("holy shit %d %c\n", i, c);
+				//}
+				 //will reset to one from 0 when then return in found
+				if (c != ' ' && c != '/')
 				{
-					//putchar(c);
-					store[0][i] = c; //just note to properly access these values you need to have a for loop
-					printf("%s\n", store[0][i]);
-				}
-				i++;
-			}
-			i = 0;
-			while ((c = getc(f)) != EOF)
-			{
-				if (c == ' ' && l == 0)
+					name[i] = c; //the shit starts going into the name
+					l = 1;
+				} 
+				//if (c == ' ' && l == 1)
+				//{
+				//	printf("%s\n", name);
+				//	//l = 1; //shit this resets
+				//}
+				//printf("asdsaas\n");
+				if (c == '/')
 				{
-					//store[
+					//printf("asddasd\n");
+					path[i] = c;					
+					printf("%s\n", path);
+					//printf("%d %c\n",i,c);
+					p = 1;
 				}
+				//if (c == 'y')
+				//{
+				//	printf("damn\n");
+				//}
+				//buf[i] = c;
+				//this shit can work, but at the same time it's broken, and i may have deleted working code 
+				//when you eventually check shit, put strcmp in a for loop, when it does equal 0, make that the string to use
 				i++;
 			}
-			fclose(f);	
-			*/
+			fclose(f); //possibly this close will move
+			//buf[i + 1] = '\0';
+			printf("---------\n%s\n", path);
+			//for(i = 0; i < MAX_FILEC_SZ; i++)
+			//{
+			//	if (strcmp(buf[i] == "happy"))
+			//	{
+			//		printf("wow %d\n", i); //starts at 0, that's why 6 is / and not space
+			//	}
+			//}
 		}
-		//printf("%d\n", store[0][0]);
-		//fgets(d, MAX_DEC_SZ, stdin);
-                //if ((strlen(d) > 0 && (d[strlen (d) -1]) == '\n'))
-                //{
-                //        d[strlen(d) - 1] = '\0';
-                //}
-		//if () 
-		//scanf("%c", d); 
-		//switch(d)
-		//{
-		//	case
-		//	default: printf("Creating new profile: "); 
-		//}
-		
+		/*
+		printf("%d\n", store[0][0]);
+		fgets(d, MAX_DEC_SZ, stdin);
+                if ((strlen(d) > 0 && (d[strlen (d) -1]) == '\n'))
+                {
+                        d[strlen(d) - 1] = '\0';
+                }
+		if () 
+		scanf("%c", d); 
+		switch(d)
+		{
+			case
+			default: printf("Creating new profile: "); 
+		}
+		*/
 	}
 	return 0;
 }
+
