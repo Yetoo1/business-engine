@@ -141,6 +141,7 @@ int main(int argc, char *argv[])
 		char c = getchar();
 		char *name = NULL;
 		char *path = NULL;
+		char dpath[256]; //max + 1, this will eventually get merged with the one above
 		size_t len = 0;
 		ssize_t read;
 		FILE *f = fopen(configpf, "a+"); //yes a+ kind of makes it unecessary for the the init.sh, but like I need that write append and read and no file length truncate, I think for the latter 
@@ -150,7 +151,7 @@ int main(int argc, char *argv[])
 		}
 		else 
 		{
-			
+			//parsing but like, the way that fprintf is working, going to a new line in all, a new method needs to be developed to parse the file https://cboard.cprogramming.com/c-programming/68741-how-can-i-parse-data-file.html
 			switch(c) //behavior is weird inside case statements
 			{
 				case 'n': 
@@ -163,6 +164,7 @@ int main(int argc, char *argv[])
 							break;
 						}
 						//i am aware that the prompt doesn't print again after each iteration, but for some fucking reason, the thing prompts twice when pressing enter on a character, it's retarded, switch statements are retarded
+						//propably this is going to be replaced with scanf then from that to fgets(), you know what fuck it, just straight to fgets() https://blog.udemy.com/fgets-in-c/
 					}
 					free(name);					 
                                         printf("Enter the path which you wish to store your profile: ");
@@ -178,8 +180,12 @@ int main(int argc, char *argv[])
 					break;
 				case 'd':
 					printf("Enter the name of the profile you wish to delete: ");
+					//fgets(dpath, 256,stdin);
+					deletep(dpath);
+					printf("Are you sure?");
 					break;
 			}
+			
 			fclose(f);
 		}	
 	}
