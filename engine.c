@@ -6,6 +6,7 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <ctype.h>
 #define MAX_INPUT_SZ 256 /*Maximum name size +1*/
 #define MAX_DEC_SZ 2  /*Maximum decision size +1*/
 #define MAX_STR_SZ 256 /*MAXIMUM string size +1 and yes I know that it's the same as the input size but I want there to be a difference*/
@@ -125,118 +126,62 @@ int main(int argc, char *argv[])
 		/* 
 		This file is supposed to look like:
 		example:
-		number profilename directory
-		1 happy	/home/faggot/.config/eco/happy/
-		2 shithead /home/asshead/Documents/shit/
-		3 wow /tmp/imafaggotforthisfolderbeinghere
+		profilename;directory
+		happy;/home/faggot/.config/eco/happy/
+		shithead;/home/asshead/Documents/shit/
+		wow;/tmp/imafaggotforthisfolderbeinghere
 		*/
 		//store the numbers in row 0
 		//store the profilename in row 1
 		//store the directory in row 2
 		char *store[2][100]; //0-99;  row 0 is the name, row 1 is the path
-		printf("Select a profile. Press n to make a new one\n");
+		printf("Select a profile. Press n to make a new one. Press d to delete one.\n");
 		/*this next part checks to see if anything is in the file*/
 		//it currently doesn't do that
-		int c = 0;
-		char *d; //change to regular char if needed
-		char str[MAX_STR_SZ];
-		FILE *f = fopen(configpf, "r"); 
+		char c = getchar();
+		char *name = NULL;
+		char *path = NULL;
+		size_t len = 0;
+		ssize_t read;
+		FILE *f = fopen(configpf, "a+"); //yes a+ kind of makes it unecessary for the the init.sh, but like I need that write append and read and no file length truncate, I think for the latter 
 		if (!f)
 		{
 			printf("For some fucking reason, the file can't be opened.");	
 		}
 		else 
 		{
-			//these may not seem necessary, but it is if you want to detect numbers
-			int l = 0; //name bool
-			int p = 0; //path bool
-			int i = 0; //iterator
-			//char buf[3]; //maximum +1
-			char path[MAX_FILEC_SZ]; //or you could have a max name size, max path size, and make that really big
-			char name[MAX_STR_SZ]; // the name part, who needs buf when you have tough
-			//int y = 0; //iterator
-			//int z = 0; //iterator
-			//printf("Going to search.\n");
-			while ((c = getc(f)) != EOF) //just make it so the fucking sdhit justs counts the rotations and that's in the display , and the rest of the shit is read here
+			
+			switch(c) //behavior is weird inside case statements
 			{
-				//putchar(c); don't print, only print when everything is parsed		
-				//or have it where the buf = "$!" until a '\r' is reached 
-				//buf[p] = c;
-				//printf("%s\n", &buf);
-				//printf("happy %d\n", p);
-				//if (p == 2)
-				//{
-				//	printf("%s\n", &buf);
-				//	//p = 0; 
-				//	break;				
-				//}
-				//if (p != 2)	
-				//{
-				//	printf("asdas\n");
-				//	buf[p] = c;
-				//}
-				//printf("%c",buf);
-				//p++;
-				//printf("p updated\n");
-				//if (c == 'h');
-				//{
-				//	printf("holy shit %d %c\n", i, c);
-				//}
-				 //will reset to one from 0 when then return in found
-				if (c != ' ' && c != '/')
-				{
-					name[i] = c; //the shit starts going into the name
-					l = 1;
-				} 
-				//if (c == ' ' && l == 1)
-				//{
-				//	printf("%s\n", name);
-				//	//l = 1; //shit this resets
-				//}
-				//printf("asdsaas\n");
-				if (c == '/')
-				{
-					//printf("asddasd\n");
-					path[i] = c;					
-					printf("%s\n", path);
-					//printf("%d %c\n",i,c);
-					p = 1;
-				}
-				//if (c == 'y')
-				//{
-				//	printf("damn\n");
-				//}
-				//buf[i] = c;
-				//this shit can work, but at the same time it's broken, and i may have deleted working code 
-				//when you eventually check shit, put strcmp in a for loop, when it does equal 0, make that the string to use
-				i++;
+				case 'n': 
+					printf("Enter the name of the new profile: ");
+					while ((read = getline(&name, &len, stdin)) != -1) 
+					{
+						if (read > 1)
+						{	
+							fprintf(f,"%s", name);
+							break;
+						}
+						//i am aware that the prompt doesn't print again after each iteration, but for some fucking reason, the thing prompts twice when pressing enter on a character, it's retarded, switch statements are retarded
+					}
+					free(name);					 
+                                        printf("Enter the path which you wish to store your profile: ");
+					while ((read = getline(&path, &len, stdin)) != -1)
+					{
+						if (read > 1)
+						{
+							fprintf(f,"%s", path);
+							break;
+						}
+					}
+					free(path);
+					break;
+				case 'd':
+					printf("Enter the name of the profile you wish to delete: ");
+					break;
 			}
-			fclose(f); //possibly this close will move
-			//buf[i + 1] = '\0';
-			printf("---------\n%s\n", path);
-			//for(i = 0; i < MAX_FILEC_SZ; i++)
-			//{
-			//	if (strcmp(buf[i] == "happy"))
-			//	{
-			//		printf("wow %d\n", i); //starts at 0, that's why 6 is / and not space
-			//	}
-			//}
-		}
-		/*
-		printf("%d\n", store[0][0]);
-		fgets(d, MAX_DEC_SZ, stdin);
-                if ((strlen(d) > 0 && (d[strlen (d) -1]) == '\n'))
-                {
-                        d[strlen(d) - 1] = '\0';
-                }
-		if () 
-		scanf("%c", d); 
-		switch(d)
-		{
-			case
-			default: printf("Creating new profile: "); 
-		}
-		*/
+			fclose(f);
+		}	
 	}
 	return 0;
 }
